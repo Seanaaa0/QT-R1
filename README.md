@@ -22,6 +22,40 @@ With **tries=1** and `temperature=0.0`, we observe **~20–30%** accuracy on our
 > If you reproduce or improve results, PRs with scorecards are welcome.
 
 ---
+## Roadmap
+
+###  Done
+- 11-round STaR loop (`s2_easy` → `s2_2_R1_5`) on Qwen2.5-1.5B (local WSL).
+- Strict format guard (`Final:` + step bound) via `verify_star_integrity_relaxed.py`.
+- Single-try inference path (`tries=1`) for fast iteration.
+
+###  In Progress
+- Fix a **frozen test split** + `scripts/summarize_reports.py` to auto-aggregate **Accuracy / Format-Pass / Avg Steps** per round into `docs/results.md`.
+- Stable Mermaid diagram + CI lint for README rendering.
+
+###  Next (short term)
+- **S1-style multi-sample**: support `tries>1` with selection:
+  - Best-of-N (majority vote or numeric argmax),
+  - **Judge** model / rule-based selector,
+  - (optional) **value head** scorer.
+- **Base-model swaps**: Qwen2.5-3B / 7B paths with QLoRA; config presets in `configs/`.
+- **Evaluation**: add GSM8K / MATH small subsets for sanity checks.
+
+###  Next (mid term)
+- **RL track** (plug-in with TRL):
+  - DPO/SimPO baseline,
+  - **RLAIF** with lightweight reward model (format+correctness),
+  - R1-style RL schedule (long-horizon reasoning) with compute caps.
+- **Verifier++**:
+  - Step-limit heuristics, numeric answer parser, and unit tests.
+  - Optional “first-only dataset” export flag.
+
+###  Data & Release
+- Provide a small **open sample** (no training leakage) + data schema doc.
+- Optional model release: LoRA adapters with clear license & card.
+
+**Contributions welcome**: PRs for selectors (judge/value), RL hooks, new eval sets, or better data curation.
+
 
 ##  Pipeline
 
