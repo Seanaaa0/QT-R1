@@ -1,4 +1,4 @@
-# QT-R1 — STaR × S1 Test-Time Scaling on Qwen 0.5B (Math)
+# QT-R1 — STaR × S1 Test-Time Scaling on Qwen2.5-1.5B (Math)
 
 **Summary**  
 This repo distills an 11-round STaR loop on **Qwen2.5-0.5B** for math reasoning, influenced by **S1** (Simple Test‑Time Scaling) and using portions of **OpenR1‑Math‑220k**. All runs were executed locally on WSL/Linux across the following sequence: `s2_easy → s2_easy_1 … s2_easy_5 → s2_2_R1_1 … s2_2_R1_5`.  
@@ -27,10 +27,12 @@ With **tries=1** and `temperature=0.0`, we observe **~20–30%** accuracy on our
 
 ```mermaid
 flowchart LR
-  A[Round r dataset] -->|train/finetune| B(LoRA Adapter r)
-  B --> C[Inference on held-out candidates]
-  C --> D[Verifier: format & answer check]
-  D --> E[Merged JSONL (r+1)]
+  subgraph Round_r
+    A[Dataset r] -->|train / finetune| B(LoRA adapter r)
+    B --> C[Inference candidates]
+    C --> D[Verifier: format + answer]
+    D --> E[JSONL merged r+1]
+  end
   E -->|repeat| A
 ```
 
