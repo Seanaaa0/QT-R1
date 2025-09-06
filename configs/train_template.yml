@@ -1,4 +1,4 @@
-base_model: Qwen/Qwen2.5-0.5B
+base_model: Qwen/Qwen2.5-1.5B
 datasets:
   - path: data/star_R1_01.jsonl
     type: alpaca

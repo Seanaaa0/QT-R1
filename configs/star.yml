@@ -2,7 +2,7 @@ rounds: 11
 seed: 63
 
 model:
-  base: Qwen/Qwen2.5-0.5B
+  base: Qwen/Qwen2.5-1.5B
   lora_tag: s2_easy
   out_tag: q0_5b
 
