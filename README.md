@@ -1,7 +1,7 @@
 # QT-R1 — STaR × S1 Test-Time Scaling on Qwen2.5-1.5B (Math)
 
 **Summary**  
-This repo distills an 11-round STaR loop on **Qwen2.5-0.5B** for math reasoning, influenced by **S1** (Simple Test‑Time Scaling) and using portions of **OpenR1‑Math‑220k**. All runs were executed locally on WSL/Linux across the following sequence: `s2_easy → s2_easy_1 … s2_easy_5 → s2_2_R1_1 … s2_2_R1_5`.  
+This repo distills an 11-round STaR loop on **Qwen2.5-1.5B** for math reasoning, influenced by **S1** (Simple Test‑Time Scaling) and using portions of **OpenR1‑Math‑220k**. All runs were executed locally on WSL/Linux across the following sequence: `s2_easy → s2_easy_1 … s2_easy_5 → s2_2_R1_1 … s2_2_R1_5`.  
 With **tries=1** and `temperature=0.0`, we observe **~20–30%** accuracy on our selected OpenR1‑Math split (single attempt, strict formatting).
 
 ---
@@ -94,7 +94,7 @@ flowchart LR
 pip install -r requirements.txt
 
 # 2) Smoke test (50 samples, tries=1, deterministic)
-python scripts/star_test_100_v3.py   --base-model Qwen/Qwen2.5-0.5B --subset default   --n 50 --seed 63 --max-new-tokens 384 --temperature 0.0   --tries 1 --fewshot format --out-dir outputs/smoke
+python scripts/star_test_100_v3.py   --base-model Qwen/Qwen2.5-1.5B --subset default   --n 50 --seed 63 --max-new-tokens 384 --temperature 0.0   --tries 1 --fewshot format --out-dir outputs/smoke
 
 # 3) Multi-round orchestration (reads configs/star.yml)
 python scripts/pipeline.py --config configs/star.yml
@@ -149,3 +149,6 @@ QT-R1/
 
 ##  License
 MIT
+![License](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
