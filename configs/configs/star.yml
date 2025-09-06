@@ -1,0 +1,35 @@
+project_name: QT_Star
+rounds: 6
+seed: 7
+
+model:
+  base: "./qwen2_5-1_5b"         # 你的 base model
+  lora_tag: "s2_easy"            # 你現有命名慣例（s2_easy_*）
+  out_tag: "q1_5b"               # 用在 outputs/<tag>/...
+
+paths:
+  runs_dir: "runs"
+  outputs_dir: "outputs"
+  data_dir: "data"
+  state_file: "state/star_state.json"
+  train_cfg_template: "configs/s2_easy_TEMPLATE.yml"   # 新增：作為每輪訓練的模板
+  train_cfg_dir: "configs"                              # 生成每輪 cfg 放這
+
+data:
+  # 第1輪開始前的 active；第一次跑會用它，merge 完會自動指到下一個
+  active_path: "data/star_R1_01.jsonl"
+
+test:
+  n: 100
+  subset: "default"
+  max_new_tokens: 384
+  temperature: 0.0
+  tries: 3
+  fewshot: "format"
+
+commands:
+  # 這裡用 axolotl 作例子；若你是自寫 train 腳本，把這行改掉即可
+  train_cmd: "python -m axolotl.cli.train -c {train_cfg}"
+  test_cmd:  "python scripts/star_test_100_v3.py --base-model {base} --lora {lora_dir} --subset {subset} --n {n} --seed {seed} --max-new-tokens {max_new_tokens} --temperature {temperature} --tries {tries} --fewshot {fewshot} --out-dir {test_out_dir}"
+  verify_cmd: "python scripts/verify_star_integrity_relaxed.py --in {alpaca_in} --out {verify_out}"
+  merge_cmd:  "python scripts/merge_star_dedup.py -o {merged_out} {merge_inputs}"

@@ -1,0 +1,36 @@
+
+base_model: qwen-0_5b-instruct
+trust_remote_code: true
+
+# QLoRA
+load_in_4bit: true
+bnb_4bit_compute_dtype: float16
+adapter: lora
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules: ["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj"]
+
+# 這裡改成「載入上一階段 LoRA 權重」
+lora_model_dir: runs/s2_openr1_1k_1     # ← 第一階段輸出目錄，或指到某個 checkpoint-* 也可以
+
+datasets:
+  - path: data/openr1_alpaca_1k/part2.jsonl
+    type: alpaca
+
+train_on_inputs: false
+mask_prompt: true
+sequence_len: 2048
+sample_packing: false
+
+# 批次：三選二就夠，用這兩個最常見
+micro_batch_size: 1
+gradient_accumulation_steps: 8
+
+learning_rate: 2e-4
+optimizer: paged_adamw_8bit
+num_epochs: 1
+save_steps: 500
+
+# 第二階段用全新輸出夾，避免覆蓋第一階段
+output_dir: runs/s2_openr1_1k_2

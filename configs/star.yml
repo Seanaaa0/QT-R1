@@ -1,0 +1,45 @@
+rounds: 11
+seed: 63
+
+model:
+  base: Qwen/Qwen2.5-0.5B
+  lora_tag: s2_easy
+  out_tag: q0_5b
+
+paths:
+  runs_dir: runs
+  outputs_dir: outputs
+  data_dir: data
+  state_file: .cache/state.json
+  train_cfg_template: configs/train_template.yml
+  train_cfg_dir: configs/round_cfgs
+
+data:
+  active_path: data/star_R1_01.jsonl
+
+test:
+  subset: default
+  n: 600
+  max_new_tokens: 384
+  temperature: 0.0
+  tries: 1
+  fewshot: format
+
+commands:
+  train_cmd: ""
+  test_cmd: >
+    python scripts/star_test_100_v3.py
+      --base-model {base}
+      --lora {lora_dir}
+      --subset {subset}
+      --n {n}
+      --seed {seed}
+      --max-new-tokens {max_new_tokens}
+      --temperature {temperature}
+      --tries {tries}
+      --fewshot {fewshot}
+      --out-dir {test_out_dir}
+  verify_cmd: >
+    python scripts/verify_star_integrity_relaxed.py --in {alpaca_in} --out {verify_out}
+  merge_cmd: >
+    python scripts/merge_dedup.py --out {merged_out} {merge_inputs}

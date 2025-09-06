@@ -1,0 +1,23 @@
+base_model: qwen-0_5b-instruct
+load_in_4bit: true
+bnb_4bit_compute_dtype: float16
+adapter: lora
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules: ["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj"]
+datasets:
+  - path: data/openr1_alpaca_1k/part1.jsonl
+    type: alpaca
+train_on_inputs: false
+mask_prompt: true
+sequence_len: 2048
+sample_packing: false
+output_dir: runs/s2_openr1_1k_1
+micro_batch_size: 1
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 2e-4
+optimizer: paged_adamw_8bit
+num_epochs: 1
+save_steps: 500

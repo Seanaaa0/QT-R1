@@ -1,0 +1,10 @@
+torch
+transformers>=4.38
+datasets>=2.19
+peft>=0.11
+accelerate>=0.29
+bitsandbytes>=0.43
+safetensors
+sentencepiece
+pyyaml
+sympy

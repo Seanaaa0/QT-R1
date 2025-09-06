@@ -1,0 +1,6 @@
+base_model: Qwen/Qwen2.5-0.5B
+datasets:
+  - path: data/star_R1_01.jsonl
+    type: alpaca
+lora_model_dir: ""
+output_dir: runs/s2_easy_1

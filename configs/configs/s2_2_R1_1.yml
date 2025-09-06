@@ -1,0 +1,35 @@
+# star 3 round
+
+base_model: qwen2_5-1_5b
+
+trust_remote_code: true
+
+
+load_in_4bit: true
+bnb_4bit_compute_dtype: float16
+adapter: lora
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules: ["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj"]
+lora_model_dir: runs/s2_easy_5
+datasets:
+  - path: data/star_round_6.jsonl
+    type: alpaca
+
+train_on_inputs: false
+mask_prompt: true
+sequence_len: 2048
+sample_packing: false
+
+# 批次：三選二就夠，用這兩個最常見
+micro_batch_size: 1
+gradient_accumulation_steps: 8
+
+learning_rate: 1.1e-4
+optimizer: paged_adamw_8bit
+num_epochs: 1
+save_steps: 200
+
+# 第二階段用全新輸出夾，避免覆蓋第一階段
+output_dir: runs/s2_2_easy_1
